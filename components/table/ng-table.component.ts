@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
@@ -53,6 +53,7 @@ export class NgTableComponent {
   @Output() public cellClicked:EventEmitter<any> = new EventEmitter();
 
   public showFilterRow:Boolean = false;
+  public context: SecurityContext;
 
   @Input()
   public set columns(values:Array<any>) {
@@ -80,7 +81,7 @@ export class NgTableComponent {
   }
 
   public sanitize(html:string):SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    return this.sanitizer.sanitize(this.context, html);
   }
 
   public get columns():Array<any> {
